@@ -1,14 +1,18 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { useState } from "react";
+import User from "./Component/User";
+import Todo from "./Component/Todo";
 
 function App() {
   const [user, setUser] = useState([]);
+  const [todo, setTodo] = useState([]);
 
   const fetchUsers = () => {
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => response.json())
       .then((json) => {
+        setTodo([]);
         setUser(json);
       });
   };
@@ -16,7 +20,10 @@ function App() {
   const fetchTodos = () => {
     fetch("https://jsonplaceholder.typicode.com/todos")
       .then((response) => response.json())
-      .then((json) => console.log(json));
+      .then((json) => {
+        setUser([]);
+        setTodo(json);
+      });
   };
 
   return (
@@ -26,12 +33,10 @@ function App() {
         <button onClick={fetchTodos}>Todos</button>
       </div>
       {user.map((user, index) => {
-        return (
-          <div>
-            <h3>Name: {user.name}</h3>
-            <h3>User: {user.username}</h3>
-          </div>
-        );
+        return <User user={user} />;
+      })}
+      {todo.map((todo, index) => {
+        return <Todo todo={todo} />;
       })}
     </div>
   );
